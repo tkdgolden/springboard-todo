@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     // declared without a keyword (var, let, or const), making it a global variable. It's better to declare it with let or const to limit its scope.
     let listArray = [];
+    // Querying dom can be expensive, avoid repeating this operation often since it is not supposed to change at all.
+    const ulContainer = document.querySelector("ul");
     // avoid using != or ==, unless you are 100% aware of the outcome of the operation, switch to using !== or ===.
     if (JSON.parse(localStorage.getItem("savedList")) !== null) {
         listArray = JSON.parse(localStorage.getItem("savedList"));
@@ -35,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function showTodo(text) {
         let newLi = document.createElement("li");
         newLi.innerText = text;
-        document.querySelector("ul").append(newLi);
+        
+        ulContainer.append(newLi);
         return newLi;
     }
 
@@ -45,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("savedList", JSON.stringify(listArray));
     }
 
-    document.querySelector("ul").addEventListener("click", function (event) {
+    ulContainer.addEventListener("click", function (event) {
         let selectedLi = event.target;
         selectedLi.classList.toggle("complete");
         let index = listArray.findIndex((obj) => obj.text === selectedLi.innerText);
@@ -57,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("savedList", JSON.stringify(listArray));
     });
 
-    document.querySelector("ul").addEventListener("dblclick", function (event) {
+    ulContainer.addEventListener("dblclick", function (event) {
         let selectedLi = event.target;
         selectedLi.remove();
         listArray = listArray.filter((item) => item.text !== selectedLi.innerText);
