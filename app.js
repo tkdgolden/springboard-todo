@@ -1,14 +1,14 @@
-document.addEventListener("DOMContentLoaded", function (){
+document.addEventListener("DOMContentLoaded", function () {
     listArray = []
-    if (JSON.parse(localStorage.getItem("savedList")) != null){
+    if (JSON.parse(localStorage.getItem("savedList")) != null) {
         listArray = JSON.parse(localStorage.getItem("savedList"))
-        function removeNull(each){
+        function removeNull(each) {
             return each != null
         }
         listArray = listArray.filter(removeNull)
-        for (let item of listArray){
+        for (let item of listArray) {
             let newItem = showTodo(item.text)
-            if (item.status == "complete"){
+            if (item.status == "complete") {
                 newItem.classList.toggle("complete")
             }
         }
@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", function (){
         this.text = text
         this.status = "not"
     }
-    
-    document.querySelector("form").addEventListener("submit", function (event){
+
+    document.querySelector("form").addEventListener("submit", function (event) {
         event.preventDefault()
         let newValue = event.target.elements.newtodo.value
         event.target.elements.newtodo.value = ""
@@ -34,17 +34,17 @@ document.addEventListener("DOMContentLoaded", function (){
         return newLi
     }
 
-    function saveTodo(text){
+    function saveTodo(text) {
         let newTodo = new TodoItem(text)
         listArray.push(newTodo)
         localStorage.setItem("savedList", JSON.stringify(listArray))
     }
 
-    document.querySelector("ul").addEventListener("click", function (event){
+    document.querySelector("ul").addEventListener("click", function (event) {
         let selectedLi = event.target
         selectedLi.classList.toggle("complete")
         let index = listArray.findIndex((obj => obj.text == selectedLi.innerText))
-        if (listArray[index].status == "not"){
+        if (listArray[index].status == "not") {
             (listArray[index].status = "complete")
         }
         else {
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function (){
         localStorage.setItem("savedList", JSON.stringify(listArray))
     })
 
-    document.querySelector("ul").addEventListener("dblclick", function (event){
+    document.querySelector("ul").addEventListener("dblclick", function (event) {
         let selectedLi = event.target
         selectedLi.remove()
         listArray = listArray.filter(item => item.text !== selectedLi.innerText)
